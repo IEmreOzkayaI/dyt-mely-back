@@ -23,9 +23,8 @@ public class FormController {
     private FormService formService;
 
     @PostMapping(value = "/register")
-
     public String den(@RequestBody FormDto formDto) throws IOException {
-        this.formService.preRegister(formDto);
+//        this.formService.preRegister(formDto);
         return "gönderildi";
     }
 
