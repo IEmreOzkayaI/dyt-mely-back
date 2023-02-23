@@ -97,7 +97,7 @@ public class FormManager implements FormService {
 
 
         } catch (MessagingException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Başaramadı");
         }
     }
 

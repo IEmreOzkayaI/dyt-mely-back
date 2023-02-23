@@ -24,8 +24,8 @@ public class FormController {
 
     @PostMapping(value = "/register")
     public String den(@RequestBody FormDto formDto) throws IOException {
-//        this.formService.preRegister(formDto);
-        return "gönderildi";
+        this.formService.preRegister(formDto);
+        return "register1 kısmına gönderildi";
     }
 
     @PostMapping("/register2")
