@@ -16,7 +16,7 @@ import java.io.InputStream;
 
 @RestController
 @RequestMapping("/api/form")
-@CrossOrigin
+@CrossOrigin(origins="*")
 public class FormController {
 
     @Autowired
