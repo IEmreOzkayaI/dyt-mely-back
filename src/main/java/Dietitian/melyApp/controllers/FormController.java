@@ -40,7 +40,7 @@ public class FormController {
         return "gönderildi";
     }
 
-    @PostMapping("/register3")
+    @GetMapping("/register3")
     public String den() {
         return "gönderildi";
     }
