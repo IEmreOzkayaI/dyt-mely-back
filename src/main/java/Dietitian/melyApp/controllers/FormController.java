@@ -41,8 +41,7 @@ public class FormController {
     }
 
     @PostMapping("/register3")
-    public String den(@RequestParam File file) {
-        System.out.println(file.getName());
+    public String den() {
         return "gönderildi";
     }
 
