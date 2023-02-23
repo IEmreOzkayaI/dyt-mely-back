@@ -26,7 +26,7 @@ public class FormManager implements FormService {
         try {
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
             helper.setFrom("diyetisyenlik_kayit@gmail.com");
-            helper.setTo("0emre.ozkaya0@gmail.com");
+            helper.setTo("melisaozcan20@gmail.com");
             helper.setSubject("Diyetisyen Danışmanlığı Kayıt Formu");
             String body ="Kişisel Bilgiler------"+"\nAd Soyad : " + formDto.getNameSurname() +
                     "\nCinsiyet : " + formDto.getGender() +
