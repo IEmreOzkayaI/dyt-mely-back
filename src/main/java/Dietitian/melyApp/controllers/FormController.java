@@ -24,24 +24,17 @@ public class FormController {
 
     @PostMapping(value = "/register")
     public String den(@RequestBody FormDto formDto) throws IOException {
-        this.formService.preRegister(formDto);
-        return "register1 kısmına gönderildi";
+        return this.formService.preRegister(formDto);
     }
 
     @PostMapping("/register2")
     public String den(@RequestBody MultipartFile file) throws IOException {
-        File convFile = new File(file.getOriginalFilename());
-        convFile.createNewFile();
-        FileOutputStream fos = new FileOutputStream(convFile);
-        fos.write(file.getBytes());
-        fos.close();
-        formService.preRegister2(convFile);
-        return "gönderildi";
+        return formService.preRegister2(file);
     }
 
     @GetMapping("/register3")
     public String den() {
-        return "gönderildi";
+        return formService.getJson();
     }
 
 

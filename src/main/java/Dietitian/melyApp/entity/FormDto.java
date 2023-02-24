@@ -26,9 +26,9 @@ public class FormDto {
     private String allergie;
     private String morningTime;
     private String nightTime;
-    private boolean regl;
+    private String regl;
 
-    private boolean toilet;
+    private String toilet;
     private String digestiveProblem;
     private String badDrink;
     private String badFood;
@@ -38,7 +38,7 @@ public class FormDto {
     private String possibleDailyMealAmount;
     private String essentialFood;
     private String unlikedFood;
-    private boolean fastEat;
+    private String fastEat;
     private String cheatAmount;
     private String cheatReason;
 

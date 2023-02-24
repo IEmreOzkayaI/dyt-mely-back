@@ -6,8 +6,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 
 public interface FormService {
-  void  preRegister(FormDto formDto);
-  void preRegister2(File file);
+  String  preRegister(FormDto formDto);
+  String preRegister2(MultipartFile file);
 
-  FormDto getJson(String formDto, MultipartFile file);
+  String getJson();
 }

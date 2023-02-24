@@ -8,27 +8,25 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 
 @Service
 public class FormManager implements FormService {
     @Autowired
     private JavaMailSender mailSender;
+    String body ="";
 
     @Override
-    public void preRegister(FormDto formDto) {
-        MimeMessage message = mailSender.createMimeMessage();
-        try {
-            MimeMessageHelper helper = new MimeMessageHelper(message, true);
-            helper.setFrom("diyetisyenlik_kayit@gmail.com");
-            helper.setTo("melisaozcan20@gmail.com");
-            helper.setSubject("Diyetisyen Danışmanlığı Kayıt Formu");
-            String body ="Kişisel Bilgiler------"+"\nAd Soyad : " + formDto.getNameSurname() +
+    public String preRegister(FormDto formDto) {
+             body ="Kişisel Bilgiler------"+"\nAd Soyad : " + formDto.getNameSurname() +
                     "\nCinsiyet : " + formDto.getGender() +
                     "\nMeslek : " + formDto.getJob() +
                     "\nE-Posta : " + formDto.getEmail() +
@@ -43,10 +41,10 @@ public class FormManager implements FormService {
                     "\nBesin Alerjisi : " + formDto.getAllergie()+
                     "\nBelirli Bir Uyanış Saati : " + formDto.getMorningTime()+
                     "\nBelirli Bir Yatış Saati : " + formDto.getNightTime()+
-                    "\nBelirli Bir Regl Düzeni : " + (formDto.isRegl() ? "Evet" :"Hayır")+
+                    "\nBelirli Bir Regl Düzeni : " + (formDto.getRegl())+
 
                     "\n\nSindirim Sistemi------"+
-                    "\nDüzenli Tuvalet Alışkanlığınız : " + (formDto.isToilet() ? "Evet" :"Hayır")+
+                    "\nDüzenli Tuvalet Alışkanlığınız : " + (formDto.getToilet())+
                     "\nSindirim Sistemi Problemi : " + formDto.getDigestiveProblem()+
                     "\nMideye Rahatsızlık Veren Yiyecek : " + formDto.getBadFood()+
                     "\nMideye Rahatsızlık Veren İçecek : " + formDto.getBadDrink()+
@@ -58,7 +56,7 @@ public class FormManager implements FormService {
                     "\nGünde Kaç Öğün Yapabilirsiniz : " + formDto.getPossibleDailyMealAmount()+
                     "\nVazgeçilmez Besin : " + formDto.getEssentialFood()+
                     "\nSevilmeyen Besin : " + formDto.getUnlikedFood()+
-                    "\nHızlı Yemek Yeme Alışkanlığı : " + (formDto.isFastEat() ? "Evet" :"Hayır")+
+                    "\nHızlı Yemek Yeme Alışkanlığı : " + (formDto.getFastEat())+
                     "\nHaftada Kaç Kez Dışarıda Yersiniz : " + formDto.getCheatAmount()+
                     "\nDışarıda Yeme Sebebiniz Nedir : " + formDto.getCheatReason()+
 
@@ -89,52 +87,49 @@ public class FormManager implements FormService {
                     "\nGünlük Adım Sayısı : " + formDto.getDailyStep()+
                     "\nÖzel not : " + formDto.getSpecialNote();
 
-                    helper.setText(body);
 
-            mailSender.send(message);
+    return "register1 passed";
 
-            System.out.println("Mail Sent Succesfully");
-
-
-        } catch (MessagingException e) {
-            throw new RuntimeException("Başaramadı");
-        }
     }
 
-    public void preRegister2(File file) {
+    public String preRegister2(MultipartFile file) {
         MimeMessage message = mailSender.createMimeMessage();
         try {
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
             helper.setFrom("diyetisyenlik_kayit@gmail.com");
-            helper.setTo("0emre.ozkaya0@gmail.com");
-            helper.setSubject("deneme mesajı ");
+            helper.setTo("melisaozcan20@gmail.com");
+            helper.setSubject("Diyetisyen Danışmanlığı Kayıt Formu");
+            if(file != null){
+                File convFile = new File(file.getOriginalFilename());
+                convFile.createNewFile();
+                FileOutputStream fos = new FileOutputStream(convFile);
+                fos.write(file.getBytes());
+                fos.close();
 
-            helper.setText("12213213");
+                FileSystemResource filee = new FileSystemResource(convFile);
+                helper.addAttachment(filee.getFilename(), filee);
+            }
 
-            FileSystemResource filee = new FileSystemResource(file);
-            helper.addAttachment(filee.getFilename(), filee);
-
+            helper.setText(body);
             mailSender.send(message);
 
-            System.out.println("Mail Sent Succesfully");
+
+
 
 
         } catch (MessagingException e) {
             throw new RuntimeException(e);
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
+        return "form sent";
+
     }
 
-    public FormDto getJson(String formDto, MultipartFile file) {
-        FormDto formJson = new FormDto();
-        try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            formJson = objectMapper.readValue(formDto, FormDto.class);
-        }catch (IOException e){
-            System.out.printf("Error",e.toString());
-        }
-
-
-        return formJson;
+    public String getJson() {
+        return body;
     }
 
 
